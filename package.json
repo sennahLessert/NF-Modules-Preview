@@ -1,0 +1,29 @@
+{
+  "name": "nf-modules-preview",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "start": "tsx src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sennahLessert/NF-Modules-Preview.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sennahLessert/NF-Modules-Preview/issues"
+  },
+  "homepage": "https://github.com/sennahLessert/NF-Modules-Preview#readme",
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "lit": "^3.3.2",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.3"
+  }
+}
