@@ -49,11 +49,13 @@ export default class NfTile extends LitElement{
                         padding: 16px 20px;
                         font-size: 1rem;
                         color: black;
+                        border: solid 1px #BFBFBF;
                     }
 
                     .secondBtn {
                         background: #44A12C;
                         color: white;
+                        border: solid 1px #000000;
                     }
                 }
             }
