@@ -1,7 +1,6 @@
 import {customElement, property} from "lit/decorators.js"
 import {when} from "lit/directives/when.js";
 import {map} from "lit/directives/map.js";
-import { ifDefined } from "lit/directives/if-defined.js";
 import {css, CSSResultGroup, html, LitElement, TemplateResult} from "lit";
 
 @customElement("nf-tile")
@@ -10,17 +9,17 @@ export default class NfTile extends LitElement{
     @property()
     title: string = "Package Basic";
     
-    @property({ type: Boolean})
-    isFree: boolean = false
+    @property()
+    tag?: string;
 
     @property()
     firstButtonText: string = "Learn more";
 
     @property()
-    secondButtonText: string = "Activate Package Basic";
+    secondButtonText: string = "";
 
     @property()
-    headline?: string = "Package Basic included";
+    headline?: string = "";
 
     @property()
     description?: string;
@@ -33,6 +32,15 @@ export default class NfTile extends LitElement{
         "Talking Fields products"
     ];
 
+    @property({type: Boolean})
+    hideFooter: boolean = false;
+
+    @property({type: Boolean})
+    isBigTile: boolean = false;
+
+    @property()
+    subsection?: string
+
     static styles?: CSSResultGroup = css `
         :host {
             display: flex;
@@ -43,27 +51,49 @@ export default class NfTile extends LitElement{
                 height: 100%;
                 display: flex;
                 flex-direction: column;
+                min-width: 380px;
 
                 .header {
                     display: flex;
                     flex-direction: row;
+                    align-items: center;
+                    justify-content: space-evenly;
                     background: #333333;
-                    gap: 10px;
                     color: #FFFFFF;
-                    padding: 1rem 10rem;
-                    font: "Arial";
-                    font-weight: 700;
-                    font-style: bold;
-                    font-size: 1rem;
-                    
+
+                    .badgeLeft, .badgeRight {
+                        flex-grow: 1;
+                        display: flex;
+                        justify-content: flex-end;
+                        max-width: 15%;
+                    }
+                 
+                    .title {
+                        flex-grow: 1;
+                        text-align: center;
+                        font-family: Arial;
+                        font-weight: 700;
+                        font-style: bold;
+                        font-size: 16px;
+                        max-width: 50%;
+                        padding: 16px;
+                    }
+                }
+
+                .tag {
+                    background: #F39200;
+                    border: 0.4px solid #FFFFFF;
+                    border-radius: 4px;
+                    padding: 2px 7.46px;
+                    font-size: 12px;
                 }
 
                 .background {
-                    background: rgba(116, 181, 110, 0.5);
+                    background: #BFEE90;
                 }
 
                 .text {
-                    font: "Arial";
+                    font-family: Arial;
                     font-weight: 400;
                     font-size: 14px;
                 }
@@ -76,14 +106,17 @@ export default class NfTile extends LitElement{
                     flex-grow: 10;
 
                     .headline {
-                        font: "Arial";
-                        font-weight: 700;
-                        font-style: bold;
+                        font-family: Arial;
+                        font-weight: bold;
                         font-size: 16px;
                     }
 
                     ul {
                         margin: 0;
+                    }
+
+                    .subsection {
+                        color: #44A12C;
                     }
                 }
 
@@ -110,13 +143,46 @@ export default class NfTile extends LitElement{
                     }
                 }
             }
+
+            .bigTileContainer {
+                min-width: 792px;
+
+                .header {
+                    background: #DDDDDD;
+
+                    .title {
+                        color: #333333;
+                    }
+                }
+
+                .body {
+                    .headline {
+                        color: #44A12C;
+                    }
+                }
+
+                .body, .footer {
+                    background: #FFFFFF;                  
+                }
+            }
         }
     `;
+
+    private renderTag(): TemplateResult {
+        return html `
+            <div class="tag">${this.tag}</div>
+        `;
+    }
 
     private renderHeader(): TemplateResult {
         return html `
             <div class="header">
-                ${this.title}
+                <div class="badgeLeft"></div>
+                <div class="title">${this.title}</div>
+                <div class="badgeRight">
+                    ${when(this.tag, () => this.renderTag(), () => this.renderNothing())}
+                </div>
+                
             </div>
         `;
     }
@@ -135,29 +201,40 @@ export default class NfTile extends LitElement{
     }
 
     private renderDescription(): TemplateResult {
-        return html `<div innerHTML=${ifDefined(this.description)}></div>`;
+        return html `<div class="text" .innerHTML=${this.description || ""}></div>`;
     }
 
     private renderNothing(): TemplateResult { return html ``;}
 
+    private renderSubsection(): TemplateResult {
+        return html `
+            <div class="subsection text">${this.subsection}</div>
+        `;
+    }
+
     private renderBody(): TemplateResult {
         return html `
             <div class="body background">
-                ${when(this.title, () => this.renderHeadline(), () => this.renderNothing())}
+                ${when(this.headline, () => this.renderHeadline(), () => this.renderNothing())}
                 ${when(this.description, () => this.renderDescription(), () => this.renderNothing())}
-                <ul>
+                <ul class="text">
                     ${map(this.items, (item: string) => html `<li>${item}</li>`)}
                 </ul>
+                ${when(this.subsection, () => this.renderSubsection(), () => this.renderNothing())}
             </div>
         `;
     }
 
     render() {
+        if (this.isBigTile) {
+            this.hideFooter = true;
+        }
+
         return html `
-        <div class="container">
+        <div class="container ${this.isBigTile ? "bigTileContainer" : ""}">
             ${this.renderHeader()}
             ${this.renderBody()}
-            ${this.renderFooter()}
+            ${when(!this.hideFooter, () => this.renderFooter(), () => this.renderNothing())}
         </div>`;
     }
 }
