@@ -9,6 +9,7 @@ export default defineConfig({
             entry: "src/MyApp.ts",
             name: "NF-Modules-Preview"
         },
-		outDir: '../dist'
+		outDir: 'dist',
+        emptyOutDir: true
 	},
 });

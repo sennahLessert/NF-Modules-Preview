@@ -145,7 +145,7 @@ export default class NfTile extends LitElement{
             }
 
             .bigTileContainer {
-                min-width: 792px;
+                min-width: 774px;
 
                 .header {
                     background: #DDDDDD;

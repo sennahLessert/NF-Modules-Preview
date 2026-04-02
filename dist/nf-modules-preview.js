@@ -687,7 +687,7 @@ var $ = class extends J {
             }
 
             .bigTileContainer {
-                min-width: 792px;
+                min-width: 774px;
 
                 .header {
                     background: #DDDDDD;
@@ -781,7 +781,7 @@ var xe = class extends J {
             flex-direction: column;
             align-items: center;
             gap: 32px;
-            width: 100vw;
+            width: 96vw;
             
             .header {
                 font-size: 21px;
@@ -795,14 +795,14 @@ var xe = class extends J {
             }
 
             .spacer {
-                flex-grow: 1;
+                flex-grow: 0.89;
                 width: 100px;
             }
 
            .packageContainer {
                 display: flex;
                 justify-content: center;
-                gap: 32px;
+                gap: 16px;
                 width: 1204px;
                 flex-wrap: wrap;
                 padding: 0px 3rem;
